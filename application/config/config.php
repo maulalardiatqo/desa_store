@@ -25,7 +25,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 */
 // $config['base_url'] = 'https://presensitaswir.my.id/';
 // local
-$config['base_url'] = 'http://localhost/desa_store';
+$config['base_url'] = 'http://localhost/desa_store/desa_store';
+// $config['base_url'] = 'http://localhost/desa_store';
 //production
 // $config['base_url'] = 'http://presensitaswir.rf.gd/';
 // $config['base_url'] = 'https://smekal-smart.com/';
