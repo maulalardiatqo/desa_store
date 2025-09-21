@@ -26,6 +26,9 @@ class Auth extends CI_Controller
     }
     public function index()
     {
+        $this->load->view('auth/website');
+    }
+    public function loginAdmin(){
         $this->form_validation->set_rules('username', 'Username', 'trim|required', [
             'required' => 'Username harus diisi'
         ]);
