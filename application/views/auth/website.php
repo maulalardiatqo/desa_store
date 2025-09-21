@@ -132,8 +132,11 @@
       <nav id="header-nav" class="navbar navbar-expand-lg px-3 mb-3">
         <div class="container-fluid">
           <a class="navbar-brand" href="index.html">
-            <img src="<?= base_url('images/main-logo.png'); ?>" class="logo">
+            <img style="hight: 50px; width: 50px" src="<?= base_url('images/logo kab tegal.png'); ?>" class="logo">
           </a>
+          <p>
+           PEMERINTAH KABUPATEN TEGAL DESA KAJEN KEC. TALANG 
+          </p>
           <button class="navbar-toggler d-flex d-lg-none order-3 p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#bdNavbar" aria-controls="bdNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <svg class="navbar-icon">
               <use xlink:href="#navbar-icon"></use>
@@ -149,49 +152,20 @@
             <div class="offcanvas-body">
               <ul id="navbar" class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
                 <li class="nav-item">
-                  <a class="nav-link me-4 active" href="#billboard">Home</a>
+                  <a class="nav-link me-4 active" href="#billboard">Tentang</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link me-4" href="#company-services">Services</a>
+                  <a class="nav-link me-4" href="#company-services">Cara Pemesanan</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link me-4" href="#mobile-products">Products</a>
+                  <a class="nav-link me-4" href="#mobile-products">Kontak</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link me-4" href="#smart-watches">Watches</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link me-4" href="#yearly-sale">Sale</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link me-4" href="#latest-blog">Blog</a>
+                  <a class="nav-link me-4" href="#smart-watches">Katalog</a>
                 </li>
                 <li class="nav-item">
                     <a href="<?= base_url('auth/loginAdmin'); ?>" class="btn btn-secondary me-4">Login</a>
-                </li>
-
-                <li class="nav-item">
-                  <div class="user-items ps-5">
-                    <ul class="d-flex justify-content-end list-unstyled">
-                      <li class="search-item pe-3">
-                        <a href="#" class="search-button">
-                          <svg class="search">
-                            <use xlink:href="#search"></use>
-                          </svg>
-                        </a>
-                      </li>
-                      <li class="pe-3">
-                        <a href="#">
-                          <svg class="user">
-                            <use xlink:href="#user"></use>
-                          </svg>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="cart.html">
-                          <svg class="cart">
-                            <use xlink:href="#cart"></use>
-                          </svg>
+                </li>  
                         </a>
                       </li>
                     </ul>
@@ -264,7 +238,7 @@
                 </svg>
               </div>
               <div class="icon-box-content">
-                <h3 class="card-title text-uppercase text-dark">Free delivery</h3>
+                <h3 class="card-title text-uppercase text-dark">informasi produk</h3>
                 <p>Consectetur adipi elit lorem ipsum dolor sit amet.</p>
               </div>
             </div>
