@@ -68,40 +68,21 @@ class Auth extends CI_Controller
         $username = $this->input->post('username');
         $password = $this->input->post('password');
 
-        // query builder CI = select * from ... where
-        $user = $this->db->get_where('user', ['username' => $username])->row_array();
-
-        // cek data user
-        if ($user) {
-            // cek aktivasi akun
-            if ($user['is_active'] == 1) {
-                if (password_verify($password, $user['password'])) {
-                    $data = [
-                        'username' => $user['username'],
-                        'role_id' => $user['role_id'],
-                        'id' => $user['id_user']
-                    ];
-                    $this->session->set_userdata($data);
-                    if ($user['role_id'] == 1) {
-                        redirect('admin');
-                    } elseif ($user['role_id'] == 2) {
-                        redirect('guru');
-                    } 
-                } else {
-                    $this->session->set_flashdata('flash', 'Password salah');
-                    $this->session->set_flashdata('flashtype', 'danger');
-                    redirect('auth');
-                }
-            } else {
-                $this->session->set_flashdata('flash', 'Akun Tidak Aktif');
+        if($username === 'Admin' ){
+            if($password === 'Admin123@stkip'){
+                redirect('admin');
+            }else{
+                $this->session->set_flashdata('flash', 'Password salah');
                 $this->session->set_flashdata('flashtype', 'danger');
-                redirect('auth');
+                redirect('auth/loginAdmin');
             }
-        } else {
-            $this->session->set_flashdata('flash', 'Username tidak ditemukan');
+        }else{
+            $this->session->set_flashdata('flash', 'Password salah');
             $this->session->set_flashdata('flashtype', 'danger');
-            redirect('auth');
+            redirect('auth/loginAdmin');
         }
+
+       
     }
     public function logout()
     {

@@ -39,7 +39,7 @@
                                     </div>
                                     <h4 class="text-center mb-4">Login Applikasi Presensi</h4>
                                     <?= $this->session->flashdata('message'); ?>
-                                    <form action="<?= base_url('auth') ?>" method="POST">
+                                    <form action="<?= base_url('auth/loginAdmin') ?>" method="POST">
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Username</strong></label>
                                             <input type="text" class="form-control" placeholder="username" name="username" id="username">
