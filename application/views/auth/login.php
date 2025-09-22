@@ -35,9 +35,9 @@
                             <div class="col-xl-12">
                                 <div class="auth-form">
                                     <div class="text-center mb-3">
-                                        <a href="index.html"><img src="<?= base_url('assets/') ?>images/logo-login.png" alt=""></a>
+                                        <a href="index.html"><img style="width:40px; height:45px;" src="<?= base_url('images/logo kab tegal.png'); ?>" alt=""></a>
                                     </div>
-                                    <h4 class="text-center mb-4">Login Applikasi Presensi</h4>
+                                    <h4 class="text-center mb-4">WELCOME</h4>
                                     <?= $this->session->flashdata('message'); ?>
                                     <form action="<?= base_url('auth/loginAdmin') ?>" method="POST">
                                         <div class="mb-3">
@@ -58,7 +58,7 @@
                                         <!-- <div class="row d-flex justify-content-center"> Develop By TKJ SMK Al Amiriyah</div> -->
                                     </form>
                                     <div class="new-account mt-3">
-                                        <p>Don't have an account? <a class="text-primary" href="<?= base_url('auth/registrasi') ?>">Sign up</a></p>
+                                        <p><a class="text-primary" href="<?= base_url('auth') ?>">Back To Website</a></p>
                                     </div>
                                     <div class="new-account mt-3">
                                     </div>
