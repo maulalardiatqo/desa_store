@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <link rel="shortcut icon" href="<?= base_url('assets/images/logo-login.png'); ?>">
+    <link rel="shortcut icon" href="<?= base_url('images/logo kab tegal.png'); ?>">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="keywords" content="smk">
@@ -57,13 +57,9 @@
         <!--**********************************
             Nav header start
         ***********************************-->
-        <div class="nav-header">
+        <div class="nav-header" style="justify-content:center;">
             <a href="index.html" class="brand-logo">
-                <!-- <img src="<?= base_url('assets/') ?>images/logo-login.png" alt=""> -->
-                <div class="brand-title">
-                    <h2 class="">Presensi</h2>
-                    <span class="brand-sub-title">RFID</span>
-                </div>
+                <img style="hight: 50px; width: 50px;" src="<?= base_url('images/logo kab tegal.png'); ?>" class="logo">
             </a>
             <div class="nav-control">
                 <div class="hamburger">

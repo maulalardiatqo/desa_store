@@ -91,6 +91,6 @@ class Auth extends CI_Controller
 
         $this->session->set_flashdata('flash', 'Anda telah keluar');
         $this->session->set_flashdata('flashtype', 'success');
-        redirect('auth');
+        redirect('auth/loginAdmin');
     }
 }

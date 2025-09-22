@@ -70,7 +70,7 @@
 <script src="<?= base_url('assets/') ?>js/custom.min.js"></script>
 <script src="<?= base_url('assets/') ?>js/dlabnav-init.js"></script>
 <script src="<?= base_url('assets/') ?>js/demo.js"></script>
-<script src="<?= base_url('assets/') ?>js/styleSwitcher.js"></script>
+<!-- <script src="<?= base_url('assets/') ?>js/styleSwitcher.js"></script> -->
 
 
 <!-- Calenders -->
@@ -83,79 +83,27 @@
 <script src="<?= base_url('assets/') ?>swettjs/scriptku.js"></script>
 <script src="<?= base_url('assets/') ?>js/<?= $js ?>.js"></script>
 <script>
-    function cardsCenter() {
+    const priceInput = document.getElementById("price");
 
-        /*  testimonial one function by = owl.carousel.js */
+    priceInput.addEventListener("input", function (e) {
+        // Hapus semua karakter non-digit
+        let value = this.value.replace(/\D/g, "");
 
-
-
-        jQuery('.card-slider').owlCarousel({
-            loop: true,
-            margin: 0,
-            nav: true,
-            //center:true,
-            slideSpeed: 3000,
-            paginationSpeed: 3000,
-            dots: true,
-            navText: ['<i class="fas fa-arrow-left"></i>', '<i class="fas fa-arrow-right"></i>'],
-            responsive: {
-                0: {
-                    items: 1
-                },
-                576: {
-                    items: 1
-                },
-                800: {
-                    items: 1
-                },
-                991: {
-                    items: 1
-                },
-                1200: {
-                    items: 1
-                },
-                1600: {
-                    items: 1
-                }
-            }
-        })
-    }
-
-    jQuery(window).on('load', function() {
-        setTimeout(function() {
-            cardsCenter();
-        }, 1000);
-    });
-    jQuery(document).ready(function() {
-        setTimeout(function() {
-            dlabSettingsOptions.version = '';
-            new dlabSettings(dlabSettingsOptions);
-        }, 1500)
+        if (value) {
+            // Format angka ke Rupiah
+            let formatted = new Intl.NumberFormat("id-ID").format(value);
+            this.value = "Rp. " + formatted;
+        } else {
+            this.value = "";
+        }
     });
 
-     $(document).ready(function() {
-  $(document).on('click', '.btn-edit', function() {
-    var id = $(this).data('id');
-    var nama_event = $(this).data('nama_event');
-    var start_date = $(this).data('start_date');
-    var end_date = $(this).data('end_date');
-    var keterangan = $(this).data('keterangan');
-    
-    console.log('triggered')
-
-    $('#edit-id').val(id);
-    $('#edit-nama_event').val(nama_event);
-    $('#edit-start_date').val(start_date);
-    $('#edit-end_date').val(end_date);
-    $('#edit-keterangan').val(keterangan);
-
-    var myModal = new bootstrap.Modal(document.getElementById('editModal'));
-    myModal.show();
-  });
-});
-   
-
-    
+    // Opsional: agar cursor tidak lompat ke akhir saat edit
+    priceInput.addEventListener("focus", function () {
+        if (this.value === "") {
+            this.value = "Rp. ";
+        }
+    });
 </script>
 
 </body>
