@@ -17,6 +17,12 @@
           <span class="nav-text">Kelola Website</span>
         </a>
         <ul aria-expanded="false">
+           <li>
+            <a href="<?= base_url('admin/fotoWebsite') ?>">
+              <i class="fas fa-user-cog"></i>
+              Profil Desa
+            </a>
+          </li>
           <li>
             <a href="<?= base_url('admin/kegiatanDesa') ?>">
               <i class="fas fa-calendar-alt"></i> <!-- Ikon kegiatan -->
