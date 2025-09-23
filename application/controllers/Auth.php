@@ -26,8 +26,23 @@ class Auth extends CI_Controller
     }
     public function index()
     {
+        $this->load->view('auth/template header');
         $this->load->view('auth/website');
+        $this->load->view('auth/template footer');
     }
+
+        public function catalog()
+    {
+       $data['produk'] = $this->db->query("
+        SELECT p.*, s.* 
+        FROM product p 
+        LEFT JOIN stock s ON p.id_product = s.id_product
+    ")->result_array();
+        $this->load->view('auth/template header');
+        $this->load->view('auth/catalog',$data);
+        $this->load->view('auth/template footer');
+    }
+
     public function loginAdmin(){
         $this->form_validation->set_rules('username', 'Username', 'trim|required', [
             'required' => 'Username harus diisi'
