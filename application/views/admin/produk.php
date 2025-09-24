@@ -103,7 +103,7 @@
                                                 <td><?= $p['product_code'] ?></td>
                                                 <td><?= $p['product_name'] ?></td>
                                                 <td><?= decimalToCurrency($p['price']) ?></td>
-                                                <td><?= $p['desc'] ?></td>
+                                                <td><?= $p['desc_product'] ?></td>
                                                 <td>
                                                     <img src="<?= base_url('assets/products/' . $p['product_picture']) ?>" 
                                                         alt="<?= $p['product_name'] ?>" 
@@ -123,6 +123,65 @@
                                                 </td>
                                             </tr>
                                             <?php $no++; ?>
+
+                                             <!-- Modal Edit -->
+                                            <div class="modal fade" id="editProductModal<?= $p['id_product'] ?>" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <form action="<?= base_url('admin/updateProduct/' . $p['id_product']) ?>" method="post" enctype="multipart/form-data">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Edit Produk</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                
+                                                                <div class="mb-3">
+                                                                    <label>Kode Produk</label>
+                                                                    <input type="text" name="product_code" class="form-control" 
+                                                                        value="<?= $p['product_code'] ?>" readonly>
+                                                                </div>
+                                                                
+                                                                <div class="mb-3">
+                                                                    <label>Nama Produk</label>
+                                                                    <input type="text" name="product_name" class="form-control" 
+                                                                        value="<?= $p['product_name'] ?>" required>
+                                                                </div>
+                                                                
+                                                                <div class="mb-3">
+                                                                    <label>Harga</label>
+                                                                    <input type="number" name="price" class="form-control" 
+                                                                        value="<?= $p['price'] ?>" required>
+                                                                </div>
+                                                                
+                                                                <div class="mb-3">
+                                                                    <label>Deskripsi</label>
+                                                                    <textarea name="desc" class="form-control" rows="3"><?= $p['desc_product'] ?></textarea>
+                                                                </div>
+                                                                
+                                                                <div class="mb-3">
+                                                                    <label>Jumlah</label>
+                                                                    <input type="number" name="jumlah" class="form-control" 
+                                                                        value="<?= $p['jumlah'] ?>" required>
+                                                                </div>
+                                                                
+                                                                <div class="mb-3">
+                                                                    <label>Gambar Produk</label><br>
+                                                                    <img src="<?= base_url('assets/products/' . $p['product_picture']) ?>" 
+                                                                        alt="<?= $p['product_name'] ?>" 
+                                                                        width="120" class="mb-2"><br>
+                                                                    <input type="file" name="product_picture" class="form-control">
+                                                                    <small class="text-muted">Biarkan kosong jika tidak ingin mengganti gambar</small>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
@@ -135,61 +194,3 @@
     </div>
 </div>
 
- <!-- Modal Edit -->
-        <div class="modal fade" id="editProductModal<?= $p['id_product'] ?>" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <form action="<?= base_url('admin/updateProduct/' . $p['id_product']) ?>" method="post" enctype="multipart/form-data">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Edit Produk</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            
-                            <div class="mb-3">
-                                <label>Kode Produk</label>
-                                <input type="text" name="product_code" class="form-control" 
-                                       value="<?= $p['product_code'] ?>" readonly>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label>Nama Produk</label>
-                                <input type="text" name="product_name" class="form-control" 
-                                       value="<?= $p['product_name'] ?>" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label>Harga</label>
-                                <input type="number" name="price" class="form-control" 
-                                       value="<?= $p['price'] ?>" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label>Deskripsi</label>
-                                <textarea name="desc" class="form-control" rows="3"><?= $p['desc'] ?></textarea>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label>Jumlah</label>
-                                <input type="number" name="jumlah" class="form-control" 
-                                       value="<?= $p['jumlah'] ?>" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label>Gambar Produk</label><br>
-                                <img src="<?= base_url('assets/products/' . $p['product_picture']) ?>" 
-                                     alt="<?= $p['product_name'] ?>" 
-                                     width="120" class="mb-2"><br>
-                                <input type="file" name="product_picture" class="form-control">
-                                <small class="text-muted">Biarkan kosong jika tidak ingin mengganti gambar</small>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>

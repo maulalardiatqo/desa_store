@@ -18,7 +18,7 @@
         </a>
         <ul aria-expanded="false">
            <li>
-            <a href="<?= base_url('admin/fotoWebsite') ?>">
+            <a href="<?= base_url('admin/profileDesa') ?>">
               <i class="fas fa-user-cog"></i>
               Profil Desa
             </a>

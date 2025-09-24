@@ -33,6 +33,8 @@ class Auth extends CI_Controller
 
         public function catalog()
     {
+        $contact = $this->db->get('contact')->row();
+        $data['whatsapp'] = $contact ? $contact->whatsapp : '';
        $data['produk'] = $this->db->query("
         SELECT p.*, s.* 
         FROM product p 

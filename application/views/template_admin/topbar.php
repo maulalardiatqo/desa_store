@@ -31,6 +31,21 @@
     <link href="<?= base_url('assets/') ?>vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- Style css -->
     <link href="<?= base_url('assets/') ?>css/style.css" rel="stylesheet">
+    <style>
+    .form-control {
+        border: 1px solid #4e73df !important; /* warna border biru */
+        box-shadow: none !important;
+    }
+
+    .form-control:disabled {
+        background-color: #f8f9fa; /* abu-abu muda */
+        border: 1px solid #d1d3e2 !important; /* border tetap terlihat saat disabled */
+    }
+
+    textarea.form-control {
+        resize: vertical; /* biar bisa diubah tinggi */
+    }
+</style>
 
 </head>
 

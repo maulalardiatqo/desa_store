@@ -50,6 +50,64 @@ class Admin extends CI_Controller
         $this->load->view('admin/index', $data);
         $this->load->view('template_admin/footer');
     }
+    public function profileDesa()
+    {
+        $data['judul'] = 'Profil Desa';
+
+        $tentang = $this->db->get('tentang')->row();
+        $contact = $this->db->get('contact')->row();
+
+        $data['tentang'] = $tentang ? $tentang->isi_tentang : '';
+        $data['whatsapp'] = $contact ? $contact->whatsapp : '';
+        $data['instagram'] = $contact ? $contact->instagram : '';
+        $data['facebook'] = $contact ? $contact->facebook : '';
+        $data['email'] = $contact ? $contact->email : '';
+
+        $this->load->view('template_admin/topbar', $data);
+        $this->load->view('template_admin/header', $data);
+        $this->load->view('template_admin/sidebar', $data);
+        $this->load->view('admin/profileDesa', $data);
+        $this->load->view('template_admin/footer');
+    }
+    public function saveProfileDesa()
+    {
+        // ambil data dari form
+        $tentang   = $this->input->post('tentang');
+        $whatsapp  = $this->input->post('whatsapp');
+        $instagram = $this->input->post('instagram');
+        $facebook  = $this->input->post('facebook');
+        $email     = $this->input->post('email');
+
+        // === Tabel tentang ===
+        $cekTentang = $this->db->get('tentang')->row();
+        if ($cekTentang) {
+            // sudah ada → update
+            $this->db->update('tentang', ['isi_tentang' => $tentang]);
+        } else {
+            // belum ada → insert
+            $this->db->insert('tentang', ['isi_tentang' => $tentang]);
+        }
+
+        // === Tabel contat ===
+        $cekContact = $this->db->get('contact')->row();
+        $dataContact = [
+            'whatsapp'  => $whatsapp,
+            'instagram' => $instagram,
+            'facebook'  => $facebook,
+            'email'     => $email
+        ];
+
+        if ($cekContact) {
+            $this->db->update('contact', $dataContact);
+        } else {
+            $this->db->insert('contact', $dataContact);
+        }
+
+        $this->session->set_flashdata('flash', 'Berhasil Simpan Profil Desa');
+        $this->session->set_flashdata('flashtype', 'success');
+        redirect('admin/profileDesa');
+    }
+
     public function kegiatanDesa()
     {
         $data['judul'] = 'Kegiatan Desa';
@@ -146,7 +204,7 @@ public function addProduct()
                 'product_code' => $product_code,
                 'product_name' => $this->input->post('product_name'),
                 'price'        => $decimalPrice,
-                'desc'  => $this->input->post('desc'),
+                'desc_product'  => $this->input->post('desc'),
                 'product_picture'        => $fileName
             ];
 
