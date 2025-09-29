@@ -26,8 +26,10 @@ class Auth extends CI_Controller
     }
     public function index()
     {
+        $tentang = $this->db->get('tentang')->row();
+        $data['isi_tentang'] = $tentang ? $tentang->isi_tentang : '';
         $this->load->view('auth/template header');
-        $this->load->view('auth/website');
+        $this->load->view('auth/website', $data);
         $this->load->view('auth/template footer');
     }
 

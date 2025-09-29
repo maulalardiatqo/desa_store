@@ -35,18 +35,9 @@
     <section id="company-services" class="padding-large">
       <div class="container">
         <div class="row">
-          <div class="col-lg-3 col-md-6 pb-3">
-            <div class="icon-box d-flex">
-              <div class="icon-box-icon pe-3 pb-3">
-                <svg class="cart-outline">
-                  <use xlink:href="#cart-outline" />
-                </svg>
-              </div>
-              <div class="icon-box-content">
-                <h3 class="card-title text-uppercase text-dark">tentang</h3>
-                <p>Consectetur adipi elit lorem ipsum dolor sit amet.</p>
-              </div>
-            </div>
+          <div class="col-lg">
+             <h3 class="card-title text-uppercase text-dark">tentang</h3>
+              <p class="text-dark"><?=$isi_tentang?></p>
           </div>
         </div>
       </div>

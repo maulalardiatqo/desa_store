@@ -23,18 +23,7 @@
               Profil Desa
             </a>
           </li>
-          <li>
-            <a href="<?= base_url('admin/kegiatanDesa') ?>">
-              <i class="fas fa-calendar-alt"></i> <!-- Ikon kegiatan -->
-              Kegiatan Desa
-            </a>
-          </li>
-          <li>
-            <a href="<?= base_url('admin/berita') ?>">
-              <i class="fas fa-newspaper"></i> <!-- Ikon berita -->
-              Berita
-            </a>
-          </li>
+
           <li>
             <a href="<?= base_url('admin/fotoWebsite') ?>">
               <i class="fas fa-image"></i> <!-- Ikon foto -->
