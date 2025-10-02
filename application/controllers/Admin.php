@@ -69,270 +69,281 @@ class Admin extends CI_Controller
         $this->load->view('admin/profileDesa', $data);
         $this->load->view('template_admin/footer');
     }
-    public function saveProfileDesa()
-    {
-        // ambil data dari form
-        $tentang   = $this->input->post('tentang');
-        $whatsapp  = $this->input->post('whatsapp');
-        $instagram = $this->input->post('instagram');
-        $facebook  = $this->input->post('facebook');
-        $email     = $this->input->post('email');
-
-        // === Tabel tentang ===
-        $cekTentang = $this->db->get('tentang')->row();
-        if ($cekTentang) {
-            // sudah ada → update
-            $this->db->update('tentang', ['isi_tentang' => $tentang]);
-        } else {
-            // belum ada → insert
-            $this->db->insert('tentang', ['isi_tentang' => $tentang]);
-        }
-
-        // === Tabel contat ===
-        $cekContact = $this->db->get('contact')->row();
-        $dataContact = [
-            'whatsapp'  => $whatsapp,
-            'instagram' => $instagram,
-            'facebook'  => $facebook,
-            'email'     => $email
-        ];
-
-        if ($cekContact) {
-            $this->db->update('contact', $dataContact);
-        } else {
-            $this->db->insert('contact', $dataContact);
-        }
-
-        $this->session->set_flashdata('flash', 'Berhasil Simpan Profil Desa');
-        $this->session->set_flashdata('flashtype', 'success');
-        redirect('admin/profileDesa');
-    }
-
-    public function kegiatanDesa()
-    {
-        $data['judul'] = 'Kegiatan Desa';
-        $this->load->view('template_admin/topbar', $data);
-        $this->load->view('template_admin/header', $data);
-        $this->load->view('template_admin/sidebar', $data);
-        $this->load->view('admin/kegiatanDesa', $data);
-        $this->load->view('template_admin/footer');
-    }
-    public function berita()
-    {
-        $data['judul'] = 'Berita';
-        $this->load->view('template_admin/topbar', $data);
-        $this->load->view('template_admin/header', $data);
-        $this->load->view('template_admin/sidebar', $data);
-        $this->load->view('admin/berita', $data);
-        $this->load->view('template_admin/footer');
-    }
+   
     public function fotoWebsite()
     {
         $data['judul'] = 'Foto Website';
+        $data['foto_desa'] = $this->db->get('foto_desa')->result_array();
         $this->load->view('template_admin/topbar', $data);
         $this->load->view('template_admin/header', $data);
         $this->load->view('template_admin/sidebar', $data);
         $this->load->view('admin/fotoWebsite', $data);
         $this->load->view('template_admin/footer');
     }
-   public function produk()
-{
-    $data['judul'] = 'Produk';
+    public function addFotoDesa()
+    {
+        $config['upload_path']   = './assets/foto_desa/'; 
+        $config['allowed_types'] = 'jpg|jpeg|png|gif';
+        $config['max_size']      = 5048;
+        $config['encrypt_name']  = TRUE;
+        if (!is_dir($config['upload_path'])) {
+            mkdir($config['upload_path'], 0777, TRUE);
+        }
 
-    $data['produk'] = $this->db->query("
-        SELECT p.*, s.* 
-        FROM product p 
-        LEFT JOIN stock s ON p.id_product = s.id_product
-    ")->result_array();
+        $this->load->library('upload', $config);
 
-    $this->load->view('template_admin/topbar', $data);
-    $this->load->view('template_admin/header', $data);
-    $this->load->view('template_admin/sidebar', $data);
-    $this->load->view('admin/produk', $data);
-    $this->load->view('template_admin/footer');
-}
+        $fileName = null;
 
-public function addProduct()
-{
-    $product_code = $this->input->post('product_code');
-    $price = $this->input->post('price');
-    function currencyToDecimal($value) {
-        $clean = str_replace(['Rp', 'rp', '.', ' '], '', $value);
-        $clean = str_replace(',', '.', $clean);
-        return (float) $clean;
-    }
-    $decimalPrice = currencyToDecimal($price);
-
-    if ($product_code) {
-        // Cek apakah product_code sudah ada
-        $query = $this->db->get_where('product', ['product_code' => $product_code]);
-
-        if ($query->num_rows() > 0) {
-            $this->session->set_flashdata('flash', 'Kode produk sudah terdaftar!');
-            $this->session->set_flashdata('flashtype', 'danger');
-            redirect('admin/produk');
-            return;
+        if (!empty($_FILES['fotoDesa']['name'])) {
+            if ($this->upload->do_upload('fotoDesa')) {
+                $uploadData = $this->upload->data();
+                $fileName   = $uploadData['file_name'];
+            } else {
+                $this->session->set_flashdata('flash', 'Upload foto gagal: ' . $this->upload->display_errors('', ''));
+                $this->session->set_flashdata('flashtype', 'danger');
+                redirect('admin/fotoWebsite');
+                return;
+            }
         } else {
-            // Konfigurasi upload
-            $config['upload_path']   = './assets/products/';
-            $config['allowed_types'] = 'jpg|jpeg|png|gif';
-            $config['max_size']      = 2048; // 2MB
-            $config['encrypt_name']  = TRUE;
+            $this->session->set_flashdata('flash', 'Silakan pilih foto terlebih dahulu');
+            $this->session->set_flashdata('flashtype', 'danger');
+            redirect('admin/fotoWebsite');
+            return;
+        }
 
-            if (!is_dir($config['upload_path'])) {
-                mkdir($config['upload_path'], 0777, TRUE);
+        $data = [
+            'foto' => $fileName
+        ];
+
+        $this->db->insert('foto_desa', $data);
+
+        $this->session->set_flashdata('flash', 'Foto berhasil diupload');
+        $this->session->set_flashdata('flashtype', 'success');
+        redirect('admin/fotoWebsite');
+    }
+    public function deleteFotoDesa($id)
+    {
+        $foto = $this->db->get_where('foto_desa', ['id_foto' => $id])->row();
+
+        if ($foto) {
+            $filePath = './assets/foto_desa/' . $foto->foto;
+
+            if (file_exists($filePath) && is_file($filePath)) {
+                unlink($filePath);
             }
 
-            $this->load->library('upload', $config);
+            $this->db->delete('foto_desa', ['id_foto' => $id]);
 
-            $fileName = null;
-
-            if (!empty($_FILES['product_image']['name'])) {
-                if ($this->upload->do_upload('product_image')) {
-                    $uploadData = $this->upload->data();
-                    $fileName   = $uploadData['file_name'];
-                } else {
-                    $this->session->set_flashdata('flash', 'Upload gambar gagal: ' . $this->upload->display_errors('', ''));
-                    $this->session->set_flashdata('flashtype', 'danger');
-                    redirect('admin/produk');
-                    return;
-                }
-            }
-
-            // Data untuk tabel product
-            $dataProduct = [
-                'product_code' => $product_code,
-                'product_name' => $this->input->post('product_name'),
-                'price'        => $decimalPrice,
-                'desc_product'  => $this->input->post('desc'),
-                'product_picture'        => $fileName
-            ];
-
-            // Insert ke tabel product
-            $this->db->insert('product', $dataProduct);
-            $idProduct = $this->db->insert_id(); // ambil id_product baru
-
-            // Data untuk tabel stock
-            $dataStock = [
-                'id_product' => $idProduct,
-                'jumlah'     => $this->input->post('stok')
-            ];
-
-            $this->db->insert('stock', $dataStock);
-
-            $this->session->set_flashdata('flash', 'Data Produk & Stok Berhasil Ditambahkan');
+            $this->session->set_flashdata('flash', 'Foto berhasil dihapus');
             $this->session->set_flashdata('flashtype', 'success');
-            redirect('admin/produk');
-        }
-    } else {
-        $this->session->set_flashdata('flash', 'Semua field wajib diisi!');
-        $this->session->set_flashdata('flashtype', 'danger');
-        redirect('admin/produk');
-    }
-}
-public function hapusProduct($id_product)
-{
-    // 1. Ambil data produk dulu (untuk cek apakah ada dan ambil nama file gambar)
-    $produk = $this->db->get_where('product', ['id_product' => $id_product])->row_array();
-
-    if ($produk) {
-        // 2. Hapus data di tabel stock
-        $this->db->delete('stock', ['id_product' => $id_product]);
-
-        // 3. Hapus data di tabel product
-        $this->db->delete('product', ['id_product' => $id_product]);
-
-        // 4. Hapus file gambar produk (jika file ada)
-        $file_path = FCPATH . 'assets/products/' . $produk['product_picture'];
-        if (!empty($produk['product_picture']) && file_exists($file_path)) {
-            unlink($file_path);
+        } else {
+            $this->session->set_flashdata('flash', 'Foto tidak ditemukan');
+            $this->session->set_flashdata('flashtype', 'danger');
         }
 
-    
-        $this->session->set_flashdata('flash', 'Data Dihapus');
-        $this->session->set_flashdata('flashtype', 'success');;
-    } else {
-        
-        $this->session->set_flashdata('flash', 'Gagal Hapus');
-        $this->session->set_flashdata('flashtype', 'danger');
+        redirect('admin/fotoWebsite');
     }
 
-    redirect('admin/produk'); 
-}
-public function updateProduct($id_product)
-{
-    $price = $this->input->post('price');
-    function currencyToDecimal($value) {
-        $clean = str_replace(['Rp', 'rp', '.', ' '], '', $value);
-        $clean = str_replace(',', '.', $clean);
-        return (float) $clean;
-    }
-    $decimalPrice = currencyToDecimal($price);
 
-    // Ambil data lama
-    $oldProduct = $this->db->get_where('product', ['id_product' => $id_product])->row_array();
 
-    if (!$oldProduct) {
-        $this->session->set_flashdata('flash', 'Produk tidak ditemukan!');
-        $this->session->set_flashdata('flashtype', 'danger');
-        redirect('admin/produk');
-        return;
+   public function produk()
+    {
+        $data['judul'] = 'Produk';
+
+        $data['produk'] = $this->db->query("
+            SELECT p.*, s.* 
+            FROM product p 
+            LEFT JOIN stock s ON p.id_product = s.id_product
+        ")->result_array();
+
+        $this->load->view('template_admin/topbar', $data);
+        $this->load->view('template_admin/header', $data);
+        $this->load->view('template_admin/sidebar', $data);
+        $this->load->view('admin/produk', $data);
+        $this->load->view('template_admin/footer');
     }
 
-    // Konfigurasi upload
-    $config['upload_path']   = './assets/products/';
-    $config['allowed_types'] = 'jpg|jpeg|png|gif';
-    $config['max_size']      = 2048; // 2MB
-    $config['encrypt_name']  = TRUE;
+    public function addProduct()
+    {
+        $product_code = $this->input->post('product_code');
+        $price = $this->input->post('price');
+        function currencyToDecimal($value) {
+            $clean = str_replace(['Rp', 'rp', '.', ' '], '', $value);
+            $clean = str_replace(',', '.', $clean);
+            return (float) $clean;
+        }
+        $decimalPrice = currencyToDecimal($price);
 
-    if (!is_dir($config['upload_path'])) {
-        mkdir($config['upload_path'], 0777, TRUE);
-    }
+        if ($product_code) {
+            // Cek apakah product_code sudah ada
+            $query = $this->db->get_where('product', ['product_code' => $product_code]);
 
-    $this->load->library('upload', $config);
+            if ($query->num_rows() > 0) {
+                $this->session->set_flashdata('flash', 'Kode produk sudah terdaftar!');
+                $this->session->set_flashdata('flashtype', 'danger');
+                redirect('admin/produk');
+                return;
+            } else {
+                // Konfigurasi upload
+                $config['upload_path']   = './assets/products/';
+                $config['allowed_types'] = 'jpg|jpeg|png|gif';
+                $config['max_size']      = 2048; // 2MB
+                $config['encrypt_name']  = TRUE;
 
-    $fileName = $oldProduct['product_picture']; // default pakai gambar lama
+                if (!is_dir($config['upload_path'])) {
+                    mkdir($config['upload_path'], 0777, TRUE);
+                }
 
-    if (!empty($_FILES['product_picture']['name'])) {
-        if ($this->upload->do_upload('product_picture')) {
-            $uploadData = $this->upload->data();
-            $fileName   = $uploadData['file_name'];
+                $this->load->library('upload', $config);
 
-            // Hapus gambar lama jika ada
-            if (!empty($oldProduct['product_picture']) && file_exists($config['upload_path'] . $oldProduct['product_picture'])) {
-                unlink($config['upload_path'] . $oldProduct['product_picture']);
+                $fileName = null;
+
+                if (!empty($_FILES['product_image']['name'])) {
+                    if ($this->upload->do_upload('product_image')) {
+                        $uploadData = $this->upload->data();
+                        $fileName   = $uploadData['file_name'];
+                    } else {
+                        $this->session->set_flashdata('flash', 'Upload gambar gagal: ' . $this->upload->display_errors('', ''));
+                        $this->session->set_flashdata('flashtype', 'danger');
+                        redirect('admin/produk');
+                        return;
+                    }
+                }
+
+                // Data untuk tabel product
+                $dataProduct = [
+                    'product_code' => $product_code,
+                    'product_name' => $this->input->post('product_name'),
+                    'price'        => $decimalPrice,
+                    'desc_product'  => $this->input->post('desc'),
+                    'product_picture'        => $fileName
+                ];
+
+                // Insert ke tabel product
+                $this->db->insert('product', $dataProduct);
+                $idProduct = $this->db->insert_id(); // ambil id_product baru
+
+                // Data untuk tabel stock
+                $dataStock = [
+                    'id_product' => $idProduct,
+                    'jumlah'     => $this->input->post('stok')
+                ];
+
+                $this->db->insert('stock', $dataStock);
+
+                $this->session->set_flashdata('flash', 'Data Produk & Stok Berhasil Ditambahkan');
+                $this->session->set_flashdata('flashtype', 'success');
+                redirect('admin/produk');
             }
         } else {
-            $this->session->set_flashdata('flash', 'Upload gambar gagal: ' . $this->upload->display_errors('', ''));
+            $this->session->set_flashdata('flash', 'Semua field wajib diisi!');
+            $this->session->set_flashdata('flashtype', 'danger');
+            redirect('admin/produk');
+        }
+    }
+    public function hapusProduct($id_product)
+    {
+        // 1. Ambil data produk dulu (untuk cek apakah ada dan ambil nama file gambar)
+        $produk = $this->db->get_where('product', ['id_product' => $id_product])->row_array();
+
+        if ($produk) {
+            // 2. Hapus data di tabel stock
+            $this->db->delete('stock', ['id_product' => $id_product]);
+
+            // 3. Hapus data di tabel product
+            $this->db->delete('product', ['id_product' => $id_product]);
+
+            // 4. Hapus file gambar produk (jika file ada)
+            $file_path = FCPATH . 'assets/products/' . $produk['product_picture'];
+            if (!empty($produk['product_picture']) && file_exists($file_path)) {
+                unlink($file_path);
+            }
+
+        
+            $this->session->set_flashdata('flash', 'Data Dihapus');
+            $this->session->set_flashdata('flashtype', 'success');;
+        } else {
+            
+            $this->session->set_flashdata('flash', 'Gagal Hapus');
+            $this->session->set_flashdata('flashtype', 'danger');
+        }
+
+        redirect('admin/produk'); 
+    }
+    public function updateProduct($id_product)
+    {
+        $price = $this->input->post('price');
+        function currencyToDecimal($value) {
+            $clean = str_replace(['Rp', 'rp', '.', ' '], '', $value);
+            $clean = str_replace(',', '.', $clean);
+            return (float) $clean;
+        }
+        $decimalPrice = currencyToDecimal($price);
+
+        // Ambil data lama
+        $oldProduct = $this->db->get_where('product', ['id_product' => $id_product])->row_array();
+
+        if (!$oldProduct) {
+            $this->session->set_flashdata('flash', 'Produk tidak ditemukan!');
             $this->session->set_flashdata('flashtype', 'danger');
             redirect('admin/produk');
             return;
         }
+
+        // Konfigurasi upload
+        $config['upload_path']   = './assets/products/';
+        $config['allowed_types'] = 'jpg|jpeg|png|gif';
+        $config['max_size']      = 2048; // 2MB
+        $config['encrypt_name']  = TRUE;
+
+        if (!is_dir($config['upload_path'])) {
+            mkdir($config['upload_path'], 0777, TRUE);
+        }
+
+        $this->load->library('upload', $config);
+
+        $fileName = $oldProduct['product_picture']; // default pakai gambar lama
+
+        if (!empty($_FILES['product_picture']['name'])) {
+            if ($this->upload->do_upload('product_picture')) {
+                $uploadData = $this->upload->data();
+                $fileName   = $uploadData['file_name'];
+
+                // Hapus gambar lama jika ada
+                if (!empty($oldProduct['product_picture']) && file_exists($config['upload_path'] . $oldProduct['product_picture'])) {
+                    unlink($config['upload_path'] . $oldProduct['product_picture']);
+                }
+            } else {
+                $this->session->set_flashdata('flash', 'Upload gambar gagal: ' . $this->upload->display_errors('', ''));
+                $this->session->set_flashdata('flashtype', 'danger');
+                redirect('admin/produk');
+                return;
+            }
+        }
+
+        // Data untuk tabel product
+        $dataProduct = [
+            // 'product_code' => tidak diupdate
+            'product_name'     => $this->input->post('product_name'),
+            'price'            => $decimalPrice,
+            'desc'             => $this->input->post('desc'),
+            'product_picture'  => $fileName
+        ];
+
+        $this->db->where('id_product', $id_product);
+        $this->db->update('product', $dataProduct);
+
+        // Update stok di tabel stock
+        $dataStock = [
+            'jumlah' => $this->input->post('jumlah')
+        ];
+        $this->db->where('id_product', $id_product);
+        $this->db->update('stock', $dataStock);
+
+        $this->session->set_flashdata('flash', 'Data Produk & Stok Berhasil Diperbarui');
+        $this->session->set_flashdata('flashtype', 'success');
+        redirect('admin/produk');
     }
-
-    // Data untuk tabel product
-    $dataProduct = [
-        // 'product_code' => tidak diupdate
-        'product_name'     => $this->input->post('product_name'),
-        'price'            => $decimalPrice,
-        'desc'             => $this->input->post('desc'),
-        'product_picture'  => $fileName
-    ];
-
-    $this->db->where('id_product', $id_product);
-    $this->db->update('product', $dataProduct);
-
-    // Update stok di tabel stock
-    $dataStock = [
-        'jumlah' => $this->input->post('jumlah')
-    ];
-    $this->db->where('id_product', $id_product);
-    $this->db->update('stock', $dataStock);
-
-    $this->session->set_flashdata('flash', 'Data Produk & Stok Berhasil Diperbarui');
-    $this->session->set_flashdata('flashtype', 'success');
-    redirect('admin/produk');
-}
 
 
 
