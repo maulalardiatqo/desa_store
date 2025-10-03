@@ -29,9 +29,10 @@ class Auth extends CI_Controller
         $tentang = $this->db->get('tentang')->row();
         $data['isi_tentang'] = $tentang ? $tentang->isi_tentang : '';
         $data['foto_desa'] = $this->db->get('foto_desa')->result_array();
+        $foot['contact'] = $this->db->get('contact')->row();
         $this->load->view('auth/template header');
         $this->load->view('auth/website', $data);
-        $this->load->view('auth/template footer');
+        $this->load->view('auth/template footer', $foot);
     }
 
         public function catalog()
@@ -43,9 +44,10 @@ class Auth extends CI_Controller
         FROM product p 
         LEFT JOIN stock s ON p.id_product = s.id_product
     ")->result_array();
+    $foot['contact'] = $this->db->get('contact')->row();
         $this->load->view('auth/template header');
         $this->load->view('auth/catalog',$data);
-        $this->load->view('auth/template footer');
+        $this->load->view('auth/template footer', $foot);
     }
 
     public function loginadmin(){
