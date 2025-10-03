@@ -253,7 +253,7 @@
           </button>
           <div class="offcanvas offcanvas-end" tabindex="-1" id="bdNavbar" aria-labelledby="bdNavbarOffcanvasLabel">
             <div class="offcanvas-header px-4 pb-0">
-              <a class="navbar-brand" href="index.html">
+              <a class="navbar-brand" href="<?= base_url('auth/index'); ?>">
                 <img src="images/main-logo.png" class="logo">
               </a>
               <button type="button" class="btn-close btn-close-black" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdNavbar"></button>
@@ -264,7 +264,7 @@
                   <a class="nav-link me-4 active" href="<?= base_url('auth/index'); ?>">Tentang</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link me-4" href="#company-services">Cara Pemesanan</a>
+                  <a class="nav-link me-4" href="#cara_pemesanan">Cara Pemesanan</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link me-4" href="#footer">Kontak</a>

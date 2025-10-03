@@ -31,5 +31,17 @@
         </div>
       </div>
     </section>
+   <section id="cara_pemesanan" class="padding-large">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg text-center"> 
+        <img src="<?= base_url('assets/images/langkah-pemesanan.png'); ?>" 
+             alt="Langkah Pemesanan"
+             style="max-width: 100%; height: auto;">
+      </div>
+    </div>
+  </div>
+</section>
+
 
    

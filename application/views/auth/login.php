@@ -16,7 +16,7 @@
     <meta name="format-detection" content="telephone=no">
 
     <!-- PAGE TITLE HERE -->
-    <title>Login Applikasi Al Amiriyah School</title>
+    <title>Login Applikasi KWT Desa Kajen</title>
 
     <!-- FAVICONS ICON -->
     <link rel="shortcut icon" type="image/png" href="<?= base_url('assets/') ?>images/favicon.png">
@@ -45,11 +45,16 @@
                                             <input type="text" class="form-control" placeholder="username" name="username" id="username">
                                             <?= form_error('username', '<small class="text-danger pl-3">', '</small>'); ?>
                                         </div>
-                                        <div class="mb-3">
-                                            <label class="mb-1"><strong>Password</strong></label>
-                                            <input type="password" class="form-control" placeholder="password" name="password" id="password">
-                                            <?= form_error('password', '<small class="text-danger pl-3">', '</small>'); ?>
-                                        </div>
+                                        <div class="mb-3 position-relative">
+  <label class="mb-1"><strong>Password</strong></label>
+  <div class="input-group">
+    <input type="password" class="form-control" placeholder="password" name="password" id="password">
+    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+      <i class="fa fa-eye" id="eyeIcon"></i>
+    </button>
+  </div>
+  <?= form_error('password', '<small class="text-danger pl-3">', '</small>'); ?>
+</div>
                                         <div class="row d-flex justify-content-between mt-4 mb-2">
                                             <div class="text-center">
                                                 <button type="submit" class="btn btn-primary btn-block">Sign In</button>
@@ -82,6 +87,25 @@
     <script src="<?= base_url('assets/') ?>js/styleSwitcher.js"></script>
     <script src="<?= base_url('assets/') ?>swettjs/dist/sweetalert2.all.min.js"></script>
     <script src="<?= base_url('assets/') ?>swettjs/scriptku.js"></script>
+    <script>
+  const togglePassword = document.querySelector("#togglePassword");
+  const passwordInput = document.querySelector("#password");
+  const eyeIcon = document.querySelector("#eyeIcon");
+
+  togglePassword.addEventListener("click", function () {
+    const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+    passwordInput.setAttribute("type", type);
+
+    // ganti icon
+    if (type === "password") {
+      eyeIcon.classList.remove("fa-eye-slash");
+      eyeIcon.classList.add("fa-eye");
+    } else {
+      eyeIcon.classList.remove("fa-eye");
+      eyeIcon.classList.add("fa-eye-slash");
+    }
+  });
+</script>
 </body>
 
 </html>
