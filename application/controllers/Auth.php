@@ -48,7 +48,7 @@ class Auth extends CI_Controller
         $this->load->view('auth/template footer');
     }
 
-    public function loginAdmin(){
+    public function loginadmin(){
         $this->form_validation->set_rules('username', 'Username', 'trim|required', [
             'required' => 'Username harus diisi'
         ]);
@@ -88,18 +88,18 @@ class Auth extends CI_Controller
         $username = $this->input->post('username');
         $password = $this->input->post('password');
 
-        if($username === 'Admin' ){
-            if($password === 'Admin123@stkip'){
+        if($username === 'Admin@kwtdesakajen' ){
+            if($password === 'Kwtdesakajen@123_admin'){
                 redirect('admin');
             }else{
                 $this->session->set_flashdata('flash', 'Password salah');
                 $this->session->set_flashdata('flashtype', 'danger');
-                redirect('auth/loginAdmin');
+                redirect('auth/loginadmin');
             }
         }else{
             $this->session->set_flashdata('flash', 'Password salah');
             $this->session->set_flashdata('flashtype', 'danger');
-            redirect('auth/loginAdmin');
+            redirect('auth/loginadmin');
         }
 
        
@@ -111,6 +111,6 @@ class Auth extends CI_Controller
 
         $this->session->set_flashdata('flash', 'Anda telah keluar');
         $this->session->set_flashdata('flashtype', 'success');
-        redirect('auth/loginAdmin');
+        redirect('auth/loginadmin');
     }
 }

@@ -273,7 +273,7 @@
                   <a class="nav-link me-4" href="<?= base_url('auth/catalog'); ?>">Katalog</a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= base_url('auth/loginAdmin'); ?>" class="btn btn-secondary me-4">Login</a>
+                    <a href="<?= base_url('auth/loginadmin'); ?>" class="btn btn-secondary me-4">Login</a>
                 </li>  
                         </a>
                       </li>

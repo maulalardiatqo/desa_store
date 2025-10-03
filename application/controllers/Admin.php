@@ -69,7 +69,44 @@ class Admin extends CI_Controller
         $this->load->view('admin/profileDesa', $data);
         $this->load->view('template_admin/footer');
     }
-   
+    public function saveProfileDesa()
+{
+    $tentang   = $this->input->post('tentang', true);
+    $whatsapp  = $this->input->post('whatsapp', true);
+    $instagram = $this->input->post('instagram', true);
+    $facebook  = $this->input->post('facebook', true);
+    $email     = $this->input->post('email', true);
+
+    // === SIMPAN TABEL TENTANG ===
+    $cekTentang = $this->db->get('tentang')->row();
+    if ($cekTentang) {
+        // update isi_tentang
+        $this->db->update('tentang', ['isi_tentang' => $tentang]);
+    } else {
+        // insert pertama kali
+        $this->db->insert('tentang', ['isi_tentang' => $tentang]);
+    }
+
+    // === SIMPAN TABEL CONTACT ===
+    $cekContact = $this->db->get('contact')->row();
+    $dataContact = [
+        'whatsapp'  => $whatsapp,
+        'instagram' => $instagram,
+        'facebook'  => $facebook,
+        'email'     => $email
+    ];
+
+    if ($cekContact) {
+        $this->db->update('contact', $dataContact);
+    } else {
+        $this->db->insert('contact', $dataContact);
+    }
+
+     $this->session->set_flashdata('flash', 'Profil Berhasil Tersimpan');
+            $this->session->set_flashdata('flashtype', 'success');
+            redirect('admin/profileDesa');
+}
+
     public function fotoWebsite()
     {
         $data['judul'] = 'Foto Website';
@@ -360,7 +397,7 @@ class Admin extends CI_Controller
         $this->load->view('template_admin/footer');
     }
 
-
+    
     public function updateSetting()
     {
         $id = $this->input->post('id_setting');
